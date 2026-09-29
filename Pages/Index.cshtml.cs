@@ -1,31 +1,33 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using aspnetWebApp.Models;
 
 namespace aspnetWebApp.Pages;
 
 public class IndexModel : PageModel
 {
     [BindProperty]
-    public string Name { get; set; }
+    public string Name { get; set; }="";
     [BindProperty]
-    public string Phone { get; set; }
+    public string Phone { get; set; }="";
     [BindProperty]
-    public string Email { get; set; }
+    public string Email { get; set; }="";
     [BindProperty]
-    public string City{get;set;}
+    public string City{get;set;}="";
     [BindProperty]
-    public string Speciality { get; set; }
+    public string Speciality { get; set; }="";
     [BindProperty]
-    public string Language{get;set;}
+    public string Language{get;set;}="";
     [BindProperty]
-    public string Format{get;set;}
+    public string Format{get;set;}="";
     [BindProperty]
-    public string Course { get; set; }
+    public string Course { get; set; }="";
     [BindProperty]
-    public string BirthDate { get; set; }
+    public string BirthDate { get; set; }="";
     [BindProperty]
     public string[] Technologies { get; set; } = Array.Empty<string>();
+    public static List<Student> Students{get;set;}=new();
     public string Message { get; set; }
     public void OnGet()
     {
@@ -47,18 +49,39 @@ public class IndexModel : PageModel
         //         $"Курс: {Course}\n" +
         //         $"Дата рождения: {BirthDate}\n" +
         //         $"Технологии: {technologies}";
-        var student = new {
-            name = Name,
-            phone = Phone,
-            email = Email,
-            city = City,
-            speciality = Speciality,
-            language = Language,
-            course = Course,
-            birthDate = BirthDate,
-            technologies = technologies
+        var student = new Student {
+            Id=Students.Count+1,
+            Name = Name,
+            Phone = Phone,
+            Email = Email,
+            City = City,
+            Speciality = Speciality,
+            Language = Language,
+            Course = Course,
+            BirthDate = BirthDate,
+            Technologies = Technologies
         };
-        return Content(JsonSerializer.Serialize(student),"application/json");
+
+        Students.Add(student);
+        return new JsonResult(student);
+    }
+    public IActionResult OnPostDelete(int Id)
+    {
+        var student =Students.FirstOrDefault( x => x.Id==Id);
+        if(student == null)
+        {
+            return new JsonResult(new
+            {
+                succes=false,
+                message="Студет не найден"
+            });
+            
+        }
+        Students.Remove(student);
+        return new JsonResult(new
+            {
+                succes=true
+            });
     }
 
 }

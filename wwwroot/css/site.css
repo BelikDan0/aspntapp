@@ -137,22 +137,22 @@ background: #0056b3;
 .result {
 margin-top: 25px;
 padding: 20px;
-background: #3898ff;
-border-radius: 12px;
+background: #f0f0f0;
+border-radius: 12px; 
 text-align: left;
-white-space: pre-line;
-display: none;
+/* white-space: pre-line; */
+display: none; 
 }
-.result h2,p{
+/* .result h2,p{
     color: white;
     
-}
-.info-item{
+} */
+/* .info-item{
     padding: 10px;
     background: #ffffff;
     border-radius: 12px;
     color: #424242;
-}
-.result.visible{
+} */
+.visible{
     display: block;
 }

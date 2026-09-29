@@ -150,6 +150,10 @@
             <p>Данные студента</p>
         </div>
         <div class="student-info">
+        <div class="info-item">
+                <strong>Id студента:</strong>
+                <span id="result-id"></span>
+            </div>
             <div class="info-item">
                 <strong>Имя студента:</strong>
                 <span id="result-name"></span>
@@ -217,8 +221,8 @@
 
             const data = await response.json();
             console.log(data);
-            document.querySelector("#result").classList.add("visible");
-
+            // document.querySelector("#result").classList.add("visible");
+            document.querySelector("#result-id").textContent=data.id;
             document.querySelector("#result-name").textContent         = data.name ?? "Не указано";
             document.querySelector("#result-phone").textContent        = data.phone ?? "Не указано";
             document.querySelector("#result-email").textContent        = data.email ?? "Не указано";
@@ -231,6 +235,7 @@
                 Array.isArray(data.technologies)
                     ? data.technologies.join(", ")
                     : (data.technologies ?? "");
+            document.querySelector("#result").style.display="block";
 
             button.textContent = "Анкета отправлена";
         } catch (err) {
@@ -243,6 +248,6 @@
     });
     form.addEventListener("reset", function(){
         document.querySelector("#result").style.display="none";
-        document.querySelector("#status").style.display="";
+        document.querySelector("#status").style.textContent="";
     })
 </script>
