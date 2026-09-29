@@ -132,11 +132,18 @@
                 <label for="react">React</label>
             </div>
         </div>
+        
         <button class="form-button" type="submit">
             Отправить
         </button>
+        <button class="clear-form-button" type="reset">
+            Отчистить
+        </button>
+    
 
     </form>
+    <div id="status" class="status">
+    </div>
     <div id="result" class="result">
         <div class="student-card-header">
             <h2>Анкета отправленна</h2>
@@ -191,7 +198,8 @@
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
-        const button = form.querySelector("button");
+        const button = form.querySelector("button[type='submit']");
+        const status=document.querySelector('#status');
         button.textContent = "Отправка.";
         button.disabled = true;
 
@@ -226,10 +234,15 @@
 
             button.textContent = "Анкета отправлена";
         } catch (err) {
+            document.querySelector("#status").textContent="Ошибка при отправке:", err;
             console.error("Ошибка при отправке:", err);
             button.textContent = "Ошибка отправки";
         } finally {
             button.disabled = false;
         }
     });
+    form.addEventListener("reset", function(){
+        document.querySelector("#result").style.display="none";
+        document.querySelector("#status").style.display="";
+    })
 </script>
