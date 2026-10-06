@@ -28,7 +28,7 @@ public class IndexModel : PageModel
     [BindProperty]
     public string[] Technologies { get; set; } = Array.Empty<string>();
     public static List<Student> Students{get;set;}=new();
-    public string Message { get; set; }
+    public required string Message { get; set; }
     public void OnGet()
     {
         // Message = "Привет! Сообщение от C#";
@@ -50,7 +50,7 @@ public class IndexModel : PageModel
         //         $"Дата рождения: {BirthDate}\n" +
         //         $"Технологии: {technologies}";
         var student = new Student {
-            Id=Students.Count+1,
+            Id=Students.Any() ? Students.Max(x=>x.Id)+1 : 1,
             Name = Name,
             Phone = Phone,
             Email = Email,
@@ -65,6 +65,10 @@ public class IndexModel : PageModel
         Students.Add(student);
         return new JsonResult(student);
     }
+
+    public IActionResult OnGetStudents(){
+        return new JsonResult(Students);
+    }
     public IActionResult OnPostDelete(int Id)
     {
         var student =Students.FirstOrDefault( x => x.Id==Id);
@@ -72,7 +76,7 @@ public class IndexModel : PageModel
         {
             return new JsonResult(new
             {
-                succes=false,
+                success=false,
                 message="Студет не найден"
             });
             
@@ -80,7 +84,7 @@ public class IndexModel : PageModel
         Students.Remove(student);
         return new JsonResult(new
             {
-                succes=true
+                success=true
             });
     }
 

@@ -17,7 +17,7 @@
     </p>
 
     <form method="post">
-
+        @Html.AntiForgeryToken()
         <div class="form-group">
             <label>Имя-фамилия:</label>
             <input type="text" name="Name" placeholder="Введите имя" required>
@@ -194,6 +194,8 @@
     </div>
     <div class="student-section">
         <h2>Список студентов</h2>
+        <div id="students-list"></div>
+        
     </div>
 
 
@@ -201,12 +203,13 @@
 </div>
 <script>
     const form = document.querySelector("form");
+    const button = form.querySelector("button[type='submit']");
+    const status=document.querySelector('#status');
+    const studentsList=document.querySelector("#students-list");
 
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
-        const button = form.querySelector("button[type='submit']");
-        const status=document.querySelector('#status');
         button.textContent = "Отправка.";
         button.disabled = true;
 
@@ -239,18 +242,127 @@
                     ? data.technologies.join(", ")
                     : (data.technologies ?? "");
             document.querySelector("#result").style.display="block";
+            document.querySelector("#students-list").style.display="block";
+            await loadStudents();
 
             button.textContent = "Анкета отправлена";
         } catch (err) {
             document.querySelector("#status").textContent="Ошибка при отправке:", err;
-            console.error("Ошибка при отправке:", err);
+            console.error("Ошибка при отправке:"+ err);
             button.textContent = "Ошибка отправки";
         } finally {
             button.disabled = false;
         }
     });
+    
+    async function loadStudents() {
+        try {
+            const response =await fetch("?handler=Students")
+
+            if(!response.ok){
+                throw new Error("Ошибка загрузки студентов");
+            }
+            const students= await response.json()
+
+            studentsList.innerHTML=""
+            students.forEach(student => {
+                const card=document.createElement("div");
+                card.className="student-card";
+                card.innerHTML = `
+                    <div class="student-card-header">
+                        <div>
+                            <h2>
+                                ${student.name}
+                            </h2>
+                            <p>
+                                ${student.speciality}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="student-info">
+                        <div class="info-item">
+                            <span>
+                                Телефон: 
+                            </span>
+                            <strong>
+                                ${student.phone}
+                            </strong>
+                        </div>
+                        <div class="info-item">
+                            <span>
+                                Email: 
+                            </span>
+                            <strong>
+                                ${student.email}
+                            </strong>
+                        </div>
+                        <div class="info-item">
+                            <span>
+                                Курс: 
+                            </span>
+                            <strong>
+                                ${student.course}
+                            </strong>
+                        </div>
+                        <div class="info-item">
+                            <span>
+                                Дата рождения: 
+                            </span>
+                            <strong>
+                                ${student.birthDate}
+                            </strong>
+                        </div>
+                        <div class="info-item">
+                            <span>
+                                Технологии: 
+                            </span>
+                            <strong>
+                                ${student.technologies.join(", ")}
+                            </strong>
+                        </div>
+                    </div>
+                    <button 
+                        class="delete-button" 
+                        onclick="deleteStudent(${student.id})">
+                        Удалить
+                    </button>
+                    `;
+
+
+                studentsList.appendChild(card)            });
+        } catch (error) {
+            console.error(error);
+            status.textContent = "Не удалось загрузить список студентов";
+        }
+    }
+    
+    async function deleteStudent(id) {
+        try {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        const response=await fetch("?handler=Delete&id="+id,{
+            method: "POST",
+            headers:{
+                "RequestVerificationToken":token
+            }
+        });
+        if(!response.ok){
+            throw new Error("Ошибка удаления");
+        }
+        const result =await response.json();
+        if(result.success){
+            status.textContent="Анкета студента удалена";
+            await loadStudents();
+            
+        }
+        } catch (error) {
+            console.error(error);
+            status.textContent="Не удалось удалить анкету студента";
+        }
+    }
     form.addEventListener("reset", function(){
         document.querySelector("#result").style.display="none";
         document.querySelector("#status").style.textContent="";
     })
+    
+
 </script>
