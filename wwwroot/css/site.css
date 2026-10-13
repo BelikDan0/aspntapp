@@ -19,6 +19,15 @@ body {
     background-position: fixed; */
     background: #97c9ff;
 }
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
 /* ==================== Навигация ==================== */
 .nav {
@@ -26,8 +35,142 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 20px 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
+    flex-direction: column;      /* ← лого над меню */
+    align-items: center;         /* центрируем по горизонтали */
+    gap: 12px; 
+    position: sticky;   /* ← добавь эту строку */
+    top: 0;
+    z-index: 100;
+}
+/* FOOTER */
+.site-footer {
+    background: rgb(0, 153, 255);
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 60px;
+    flex-shrink: 0;
+    
+
+}
+
+.footer-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 45px 30px 30px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+.footer-logo {
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    transition: opacity 0.25s;
+}
+.footer-logo-main {
+    font-size: 40px;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    transition: opacity 0.25s;
+}
+
+.footer-logo span {
+    color: #0d3b66;
+}
+.footer-logo-main span {
+    color: #0d3b66;
+}
+
+.footer-logo:hover {
+    opacity: 0.85;
+}
+/* Главная */
+.main-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 30px 80px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
+.main-text h1 {
+    font-size: 38px;
+    font-weight: 700;
+    color: #0d3b66;
+    line-height: 1.25;
+    margin-bottom: 22px;
+}
+
+.main-text p {
+    font-size: 18px;
+    line-height: 1.65;
+    color: #2a4a6b;
+    max-width: 640px;
+    margin: 0 auto 45px;
+}
+
+/* ---------- Кнопки ---------- */
+.main-actions {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.main-btn {
+    display: inline-block;
+    padding: 16px 38px;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.25s ease;
+    min-width: 220px;
+    text-align: center;
+}
+
+.main-btn-primary {
+    background: #0099ff;
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 153, 255, 0.35);
+}
+
+.main-btn-primary:hover {
+    background: #0077cc;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 153, 255, 0.45);
+}
+
+.main-btn-outline {
+    background: #ffffff;
+    color: #0099ff;
+    border: 2px solid #0099ff;
+}
+
+.main-btn-outline:hover {
+    background: #0099ff;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* ---------- Адаптив ---------- */
+@media (max-width: 600px) {
+    .main-page { padding: 40px 20px 60px; }
+    .main-page .footer-logo-main { font-size: 34px; margin-bottom: 35px; }
+    .main-text h1 { font-size: 28px; }
+    .main-text p { font-size: 16px; }
+    .main-btn { width: 100%; min-width: unset; }
 }
 
 .nav-ul {
@@ -210,6 +353,8 @@ body {
 /* ==================== Список студентов ==================== */
 .student-section {
     margin-top: 30px;
+    display: block;
+
 }
 
 .student-section h2 {
@@ -218,18 +363,22 @@ body {
 }
 
 #students-list {
-    display: flex;
+     display: flex;
     flex-direction: column;
     gap: 20px;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
 /* ==================== Карточка студента ==================== */
 .student-card {
+    width: 100%;
     padding: 20px;
     background: #f8f8f8;
     border-radius: 12px;
     border: 1px solid #e0e0e0;
     transition: box-shadow 0.2s;
+    max-width: 700px;
 }
 
 .student-card:hover {
@@ -292,4 +441,8 @@ body {
 
 .delete-button:hover {
     background: rgb(250, 142, 142);
+}
+.main-content {
+    flex: 1 0 auto;
+    width: 100%;
 }

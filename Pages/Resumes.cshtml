@@ -1,4 +1,78 @@
 @page
 @model ResumesModel
-<h1>Резюме</h2>
-<p></p>
+
+<div class="student-section">
+
+    <div id="students-list"></div>
+    <div id="status" class="status"></div>
+</div>
+<form method="post" style="display:none;">
+    @Html.AntiForgeryToken()
+</form>
+
+<script>
+    const studentsList = document.querySelector('#students-list');
+    const status = document.querySelector('#status');
+
+    loadStudents();
+
+    async function loadStudents() {
+        try {
+            const response = await fetch('?handler=Students');
+            if (!response.ok) throw new Error('Ошибка загрузки');
+
+            const students = await response.json();
+            studentsList.innerHTML = '';
+
+            if (students.length === 0) {
+                status.textContent = 'Пока нет ни одной анкеты';
+                return;
+            }
+
+            students.forEach(student => {
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                card.innerHTML = `
+                    <div class="student-card-header">
+                        <div>
+                            <h2>${student.name}</h2>
+                            <p>${student.speciality}</p>
+                        </div>
+                    </div>
+                    <div class="student-info">
+                        <div class="info-item"><span>Телефон: </span><strong>${student.phone}</strong></div>
+                        <div class="info-item"><span>Email: </span><strong>${student.email}</strong></div>
+                        <div class="info-item"><span>Курс: </span><strong>${student.course}</strong></div>
+                        <div class="info-item"><span>Дата рождения: </span><strong>${student.birthDate}</strong></div>
+                        <div class="info-item"><span>Технологии: </span><strong>${(student.technologies || []).join(', ')}</strong></div>
+                    </div>
+                    <button class="delete-button" onclick="deleteStudent(${student.id})">Удалить</button>
+                `;
+                studentsList.appendChild(card);
+            });
+        } catch (error) {
+            console.error(error);
+            status.textContent = 'Не удалось загрузить список студентов';
+        }
+    }
+
+    async function deleteStudent(id) {
+        try {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+            const response = await fetch(`?handler=Delete&id=${id}`, {
+                method: 'POST',
+                headers: { 'RequestVerificationToken': token ?? '' }
+            });
+            if (!response.ok) throw new Error('Ошибка удаления');
+
+            const result = await response.json();
+            if (result.success) {
+                status.textContent = 'Анкета студента удалена';
+                await loadStudents();
+            }
+        } catch (error) {
+            console.error(error);
+            status.textContent = 'Не удалось удалить анкету студента';
+        }
+    }
+</script>
