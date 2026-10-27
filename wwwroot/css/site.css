@@ -701,3 +701,51 @@ body {
         flex: unset;
     }
 }
+/* ==================== Главная: блоки ролей ==================== */
+.main-roles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.role-block {
+    background: #ffffff;
+    padding: 28px 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.role-block h2 {
+    font-size: 22px;
+    color: #0d3b66;
+    margin-bottom: 10px;
+}
+
+.role-block p {
+    font-size: 15px;
+    color: #2a4a6b;
+    margin-bottom: 20px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.role-block .main-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+}
+
+.role-block .main-btn {
+    width: 100%;
+    min-width: unset;
+}
+
+@media (max-width: 700px) {
+    .main-roles {
+        grid-template-columns: 1fr;
+    }
+}

@@ -11,7 +11,6 @@
         </a>
     </div>
 
-    <!-- Панель поиска -->
     <div class="search-panel">
         <input type="text" id="search-title" placeholder="Поиск по названию или специальности...">
 
@@ -53,8 +52,8 @@
     const filterTechnology = document.querySelector('#filter-technology');
     const resetBtn = document.querySelector('#reset-filters');
 
-    let allVacancys = [];   // все вакансии с сервера
-    let filtered = [];      // отфильтрованные
+    let allVacancys = [];   
+    let filtered = [];     
 
     loadVacancy();
 

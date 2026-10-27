@@ -1,12 +1,5 @@
 ﻿@page
 @model IndexModel
-@* @{
-    Layout = null;
-    } *@
-
-@* @{
-    ViewData["Title"] = "Home page";
-    } *@
 
 <div class="main-page">
 
@@ -19,17 +12,34 @@
         </p>
     </div>
 
-    <div class="main-actions">
-        <a class="main-btn main-btn-primary" asp-page="CreateResume">
-            Создать резюме
-        </a>
-        <a class="main-btn main-btn-outline" asp-page="Resumes">
-            Смотреть резюме
-        </a>
+    <div class="main-roles">
+
+        <div class="role-block">
+            <h2>Я студент</h2>
+            <p>Создайте резюме и покажите свои навыки работодателям.</p>
+            <div class="main-actions">
+                <a class="main-btn main-btn-primary" asp-page="CreateResume">
+                    Создать резюме
+                </a>
+                <a class="main-btn main-btn-outline" asp-page="Resumes">
+                    Смотреть резюме
+                </a>
+            </div>
+        </div>
+
+        <div class="role-block">
+            <h2>Я работодатель</h2>
+            <p>Опубликуйте вакансию и найдите молодых специалистов.</p>
+            <div class="main-actions">
+                <a class="main-btn main-btn-primary" asp-page="CreateVacancy">
+                    Создать вакансию
+                </a>
+                <a class="main-btn main-btn-outline" asp-page="Vacancys">
+                    Смотреть вакансии
+                </a>
+            </div>
+        </div>
+
     </div>
-    <br>
-    <br>
-    <br>
 
 </div>
-

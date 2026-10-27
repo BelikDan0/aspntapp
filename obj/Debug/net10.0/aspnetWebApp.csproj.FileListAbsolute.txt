@@ -387,4 +387,4 @@ C:\Users\106010190\Desktop\net\aspntapp\obj\Debug\net10.0\refint\aspnetWebApp.dl
 C:\Users\106010190\Desktop\net\aspntapp\obj\Debug\net10.0\aspnetWebApp.pdb
 C:\Users\106010190\Desktop\net\aspntapp\obj\Debug\net10.0\aspnetWebApp.genruntimeconfig.cache
 C:\Users\106010190\Desktop\net\aspntapp\obj\Debug\net10.0\ref\aspnetWebApp.dll
-C:\Users\106010190\Desktop\net\aspntapp\obj\Debug\net10.0\compressed\2v9ug8irji-{0}-afuh38k9pf-afuh38k9pf.gz
+C:\Users\106010190\Desktop\net\aspntapp\obj\Debug\net10.0\compressed\2v9ug8irji-{0}-451aocnw6d-451aocnw6d.gz
