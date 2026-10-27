@@ -1,18 +1,60 @@
 @page
 @model ResumesModel
 
-<div class="student-section">
+<div class="resume">
+    <h1>Каталог резюме</h1>
+    <p class="resume-lead">Хотите создать свое резюме? Попробуйте</p>
 
-    <div id="students-list"></div>
-    <div id="status" class="status"></div>
+    <div class="resume-actions">
+        <a class="resume-btn resume-btn-primary" asp-page="CreateResume">
+            Создать резюме
+        </a>
+    </div>
+
+    <!-- Панель поиска -->
+    <div class="search-panel">
+        <input type="text" id="search-title" placeholder="Поиск по имени или специальности...">
+
+        <select id="filter-language">
+            <option value="">Все языки</option>
+            <option value="Java">Java</option>
+            <option value="Kotlin">Kotlin</option>
+            <option value="C++">C++</option>
+        </select>
+
+        <select id="filter-technology">
+            <option value="">Все технологии</option>
+            <option value="HTML/CSS">HTML/CSS</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="C#">C#</option>
+            <option value="Python">Python</option>
+            <option value="Docker">Docker</option>
+            <option value="React">React</option>
+        </select>
+
+        <button type="button" id="reset-filters" class="search-reset">Сбросить</button>
+    </div>
+
+    <div class="student-section">
+        <div id="students-list"></div>
+        <div id="status" class="status"></div>
+    </div>
+
+    <form method="post" style="display:none;">
+        @Html.AntiForgeryToken()
+    </form>
 </div>
-<form method="post" style="display:none;">
-    @Html.AntiForgeryToken()
-</form>
 
 <script>
     const studentsList = document.querySelector('#students-list');
     const status = document.querySelector('#status');
+    const searchTitle = document.querySelector('#search-title');
+    const filterLanguage = document.querySelector('#filter-language');
+    const filterTechnology = document.querySelector('#filter-technology');
+    const resetBtn = document.querySelector('#reset-filters');
+
+    let allStudents = [];   // все студенты с сервера
+    let filtered = [];      // отфильтрованные
 
     loadStudents();
 
@@ -21,39 +63,72 @@
             const response = await fetch('?handler=Students');
             if (!response.ok) throw new Error('Ошибка загрузки');
 
-            const students = await response.json();
-            studentsList.innerHTML = '';
-
-            if (students.length === 0) {
-                status.textContent = 'Пока нет ни одной анкеты';
-                return;
-            }
-
-            students.forEach(student => {
-                const card = document.createElement('div');
-                card.className = 'student-card';
-                card.innerHTML = `
-                    <div class="student-card-header">
-                        <div>
-                            <h2>${student.name}</h2>
-                            <p>${student.speciality}</p>
-                        </div>
-                    </div>
-                    <div class="student-info">
-                        <div class="info-item"><span>Телефон: </span><strong>${student.phone}</strong></div>
-                        <div class="info-item"><span>Email: </span><strong>${student.email}</strong></div>
-                        <div class="info-item"><span>Курс: </span><strong>${student.course}</strong></div>
-                        <div class="info-item"><span>Дата рождения: </span><strong>${student.birthDate}</strong></div>
-                        <div class="info-item"><span>Технологии: </span><strong>${(student.technologies || []).join(', ')}</strong></div>
-                    </div>
-                    <button class="delete-button" onclick="deleteStudent(${student.id})">Удалить</button>
-                `;
-                studentsList.appendChild(card);
-            });
+            allStudents = await response.json();
+            applyFilters();
         } catch (error) {
             console.error(error);
             status.textContent = 'Не удалось загрузить список студентов';
         }
+    }
+
+    function applyFilters() {
+        const q = searchTitle.value.trim().toLowerCase();
+        const lang = filterLanguage.value;
+        const tech = filterTechnology.value;
+
+        filtered = allStudents.filter(s => {
+            const matchName =
+                !q ||
+                (s.name || '').toLowerCase().includes(q) ||
+                (s.speciality || '').toLowerCase().includes(q);
+
+            const matchLang = !lang || (s.language || '') === lang;
+
+            const matchTech = !tech || (s.technologies || []).includes(tech);
+
+            return matchName && matchLang && matchTech;
+        });
+
+        renderStudents(filtered);
+    }
+
+    function renderStudents(list) {
+        studentsList.innerHTML = '';
+
+        if (allStudents.length === 0) {
+            status.textContent = 'Пока нет ни одной анкеты';
+            return;
+        }
+
+        if (list.length === 0) {
+            status.textContent = 'По вашему запросу ничего не найдено';
+            return;
+        }
+
+        status.textContent = '';
+
+        list.forEach(student => {
+            const card = document.createElement('div');
+            card.className = 'student-card';
+            card.innerHTML = `
+                <div class="student-card-header">
+                    <div>
+                        <h2>${student.name}</h2>
+                        <p>${student.speciality}</p>
+                    </div>
+                </div>
+                <div class="student-info">
+                    <div class="info-item"><span>Телефон: </span><strong>${student.phone ?? ''}</strong></div>
+                    <div class="info-item"><span>Email: </span><strong>${student.email ?? ''}</strong></div>
+                    <div class="info-item"><span>Город: </span><strong>${student.city ?? ''}</strong></div>
+                    <div class="info-item"><span>Курс: </span><strong>${student.course ?? ''}</strong></div>
+                    <div class="info-item"><span>Язык: </span><strong>${student.language ?? ''}</strong></div>
+                    <div class="info-item"><span>Технологии: </span><strong>${(student.technologies || []).join(', ')}</strong></div>
+                </div>
+                <button class="delete-button" onclick="deleteStudent(${student.id})">Удалить</button>
+            `;
+            studentsList.appendChild(card);
+        });
     }
 
     async function deleteStudent(id) {
@@ -75,4 +150,16 @@
             status.textContent = 'Не удалось удалить анкету студента';
         }
     }
+
+    // Слушатели фильтров
+    searchTitle.addEventListener('input', applyFilters);
+    filterLanguage.addEventListener('change', applyFilters);
+    filterTechnology.addEventListener('change', applyFilters);
+
+    resetBtn.addEventListener('click', () => {
+        searchTitle.value = '';
+        filterLanguage.value = '';
+        filterTechnology.value = '';
+        applyFilters();
+    });
 </script>

@@ -495,3 +495,209 @@ body {
     flex-wrap: wrap;
     margin-top: 30px;
 }
+
+.resume {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
+.resume h1 {
+    font-size: 34px;
+    color: #2a4a6b;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.resume .resume-lead {
+    font-size: 18px;
+    color: #2a4a6b;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.resume-actions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;      /* отступ перед списком */
+}
+
+.resume-btn {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.25s ease;
+    min-width: 220px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.resume-btn-primary {
+    background: #0099ff;
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 153, 255, 0.35);
+}
+
+.resume-btn-primary:hover {
+    background: #0077cc;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 153, 255, 0.45);
+}
+/* ==================== Вакансии: textarea ==================== */
+.form-group textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px 15px;
+    margin-top: 7px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fff;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* ==================== Вакансии: блок результата ==================== */
+.result .vacancy-card-header h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.result .vacancy-card-header p {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.vacancy-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+/* ==================== Вакансии: карточка в списке ==================== */
+.vacancy-section {
+    margin-top: 30px;
+}
+
+#vacancys-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.vacancy-card {
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+    background: #f8f8f8;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    transition: box-shadow 0.2s;
+}
+
+.vacancy-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.vacancy-card-header h2 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #222;
+}
+
+.vacancy-card-header p {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+/* ==================== Панель поиска (вакансии и резюме) ==================== */
+.search-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto 30px;
+    padding: 16px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.search-panel input[type="text"],
+.search-panel select {
+    height: 42px;
+    padding: 0 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: inherit;
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    color: #333;
+}
+
+.search-panel input[type="text"] {
+    flex: 1 1 260px;
+    min-width: 220px;
+}
+
+.search-panel select {
+    flex: 0 0 180px;
+    cursor: pointer;
+}
+
+.search-panel input[type="text"]:focus,
+.search-panel select:focus {
+    outline: none;
+    border-color: #0099ff;
+    box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.15);
+}
+
+.search-reset {
+    height: 42px;
+    padding: 0 20px;
+    border: 1px solid #0099ff;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #0099ff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+    font-family: inherit;
+}
+
+.search-reset:hover {
+    background: #0099ff;
+    color: #ffffff;
+}
+
+@media (max-width: 600px) {
+    .search-panel {
+        flex-direction: column;
+    }
+    .search-panel input[type="text"],
+    .search-panel select,
+    .search-reset {
+        width: 100%;
+        flex: unset;
+    }
+}

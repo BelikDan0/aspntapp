@@ -1,0 +1,205 @@
+@page
+@model CreateVacancyModel
+
+@* @{
+    Layout = null;
+    } *@
+
+@* @{
+    ViewData["Title"] = "Home page";
+    } *@
+
+<div class="form-container">
+
+    <h1>Создание вакансии</h1>
+
+    <p class="description">
+        Введите данные вакансии
+    </p>
+
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label>Название вакансии:</label>
+            <input type="text" name="Title" placeholder="Введите название" required>
+        </div>
+
+        <div class="form-group">
+            <label>Описание:</label>
+            <textarea name="Description"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="city">Город:</label>
+            <select name="City" id="city">
+                <option value="Москва">Москва</option>
+                <option value="Санкт-Петербург">Санкт-Петербург</option>
+                <option value="Краснодар">Краснодар</option>
+                <option value="Сочи">Сочи</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label>Специальность:</label>
+
+            <div class="speciality">
+
+                <input type="radio" name="Speciality" value="Программирование" id="dev">
+                <label for="dev">Программирование</label>
+
+                <br>
+
+                <input type="radio" name="Speciality" value="Дизайн" id="design">
+                <label for="design">Дизайн</label>
+
+                <br>
+
+                <input type="radio" name="Speciality" value="Маркетинг" id="marketing">
+                <label for="marketing">Маркетинг</label>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Язык програмирования:</label>
+            <div class="language">
+                <input type="radio" name="Language" value="Java" id="java">
+                <label for="java">Java</label>
+
+                <br>
+
+                <input type="radio" name="Language" value="Kotlin" id="kotlin">
+                <label for="kotlin">Kotlin</label>
+
+                <br>
+
+                <input type="radio" name="Language" value="C++" id="c++">
+                <label for="c++">C++</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="">Технологии:</label>
+            <div class="speciality">
+                <input type="checkbox" name="Technologies" value="HTML/CSS" id="html">
+                <label for="html">HTML/CSS</label>
+                <br>
+                <input type="checkbox" name="Technologies" value="JavaScript" id="js">
+                <label for="js">JavaScript</label>
+                <br>
+                <input type="checkbox" name="Technologies" value="C#" id="csharp">
+                <label for="csharp">C#</label>
+                <br>
+                <input type="checkbox" name="Technologies" value="Python" id="python">
+                <label for="python">Python</label>
+                <br>
+                <input type="checkbox" name="Technologies" value="Docker" id="docker">
+                <label for="Docker">Docker</label>
+                <br>
+                <input type="checkbox" name="Technologies" value="React" id="react">
+                <label for="react">React</label>
+            </div>
+        </div>
+        
+        <button class="form-button" type="submit">
+            Отправить
+        </button>
+        <button class="clear-form-button" type="reset">
+            Отчистить
+        </button>
+    
+
+    </form>
+    <div id="status" class="status">
+    </div>
+    <div id="result" class="result">
+        <div class="vacancy-card-header">
+            <h2>Анкета отправленна</h2>
+            <p>Данные студента</p>
+        </div>
+        <div class="vacancy-info">
+        <div class="info-item">
+                <strong>Id студента:</strong>
+                <span id="result-id"></span>
+            </div>
+            <div class="info-item">
+                <strong>Название вакансии</strong>
+                <span id="result-title"></span>
+            </div>
+            <div class="info-item">
+                <strong>Описание</strong>
+                <span id="result-description"></span>
+            </div>
+            <div class="info-item">
+                <strong>Город:</strong>
+                <span id="result-city"></span>
+            </div>
+            <div class="info-item">
+                <strong>Специальность:</strong>
+                <span id="result-speciality"></span>
+            </div>
+            <div class="info-item">
+                <strong>Язык:</strong>
+                <span id="result-language"></span>
+            </div>
+            <div class="info-item">
+                <strong>Технологии:</strong>
+                <span id="result-technologies"></span>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+</div>
+<script>
+    const form = document.querySelector("form");
+    const button = form.querySelector("button[type='submit']");
+    const status=document.querySelector('#status');
+    const studentsList=document.querySelector("#students-list");
+
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        button.textContent = "Отправка.";
+        button.disabled = true;
+
+        try {
+            const formData = new FormData(form);
+
+            const response = await fetch("", {
+                method: "POST",
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log(data);
+            // document.querySelector("#result").classList.add("visible");
+            document.querySelector("#result-id").textContent=data.id;
+            document.querySelector("#result-title").textContent         = data.title ?? "Не указано";
+            document.querySelector("#result-description").textContent   = data.description ?? "Не указано";
+            document.querySelector("#result-city").textContent         = data.city ?? "Не указано";
+            document.querySelector("#result-speciality").textContent   = data.speciality ?? "Не указано";
+            document.querySelector("#result-language").textContent     = data.language ?? "Не указано";
+            document.querySelector("#result-technologies").textContent =
+                Array.isArray(data.technologies)
+                    ? data.technologies.join(", ")
+                    : (data.technologies ?? "");
+
+            button.textContent = "Анкета отправлена";
+        } catch (err) {
+            document.querySelector("#status").textContent="Ошибка при отправке:", err;
+            console.error("Ошибка при отправке:"+ err);
+            button.textContent = "Ошибка отправки";
+        } finally {
+            button.disabled = false;
+        }
+    });
+    
+    
+    
+
+</script>

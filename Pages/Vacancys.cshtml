@@ -1,0 +1,142 @@
+@page
+@model VacancysModel
+
+<div class="resume">
+    <h1>Каталог вакансий</h1>
+    <p class="resume-lead">Хотите создать свою вакансию? Попробуйте</p>
+
+    <div class="resume-actions">
+        <a class="resume-btn resume-btn-primary" asp-page="CreateVacancy">
+            Создать вакансию
+        </a>
+    </div>
+
+    <!-- Панель поиска -->
+    <div class="search-panel">
+        <input type="text" id="search-title" placeholder="Поиск по названию или специальности...">
+
+        <select id="filter-language">
+            <option value="">Все языки</option>
+            <option value="Java">Java</option>
+            <option value="Kotlin">Kotlin</option>
+            <option value="C++">C++</option>
+        </select>
+
+        <select id="filter-technology">
+            <option value="">Все технологии</option>
+            <option value="HTML/CSS">HTML/CSS</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="C#">C#</option>
+            <option value="Python">Python</option>
+            <option value="Docker">Docker</option>
+            <option value="React">React</option>
+        </select>
+
+        <button type="button" id="reset-filters" class="search-reset">Сбросить</button>
+    </div>
+
+    <div class="vacancy-section">
+        <div id="vacancys-list"></div>
+        <div id="status" class="status"></div>
+    </div>
+
+    <form method="post" style="display:none;">
+        @Html.AntiForgeryToken()
+    </form>
+</div>
+
+<script>
+    const vacancysList = document.querySelector('#vacancys-list');
+    const status = document.querySelector('#status');
+    const searchTitle = document.querySelector('#search-title');
+    const filterLanguage = document.querySelector('#filter-language');
+    const filterTechnology = document.querySelector('#filter-technology');
+    const resetBtn = document.querySelector('#reset-filters');
+
+    let allVacancys = [];   // все вакансии с сервера
+    let filtered = [];      // отфильтрованные
+
+    loadVacancy();
+
+    async function loadVacancy() {
+        try {
+            const response = await fetch('?handler=Vacancys');
+            if (!response.ok) throw new Error('Ошибка загрузки');
+
+            allVacancys = await response.json();
+            applyFilters();
+        } catch (error) {
+            console.error(error);
+            status.textContent = 'Не удалось загрузить список вакансий';
+        }
+    }
+
+    function applyFilters() {
+        const q = searchTitle.value.trim().toLowerCase();
+        const lang = filterLanguage.value;
+        const tech = filterTechnology.value;
+
+        filtered = allVacancys.filter(v => {
+            const matchTitle =
+                !q ||
+                (v.title || '').toLowerCase().includes(q) ||
+                (v.speciality || '').toLowerCase().includes(q);
+
+            const matchLang = !lang || (v.language || '') === lang;
+
+            const matchTech = !tech || (v.technologies || []).includes(tech);
+
+            return matchTitle && matchLang && matchTech;
+        });
+
+        renderVacancys(filtered);
+    }
+
+    function renderVacancys(list) {
+        vacancysList.innerHTML = '';
+
+        if (allVacancys.length === 0) {
+            status.textContent = 'Пока нет ни одной вакансии';
+            return;
+        }
+
+        if (list.length === 0) {
+            status.textContent = 'По вашему запросу ничего не найдено';
+            return;
+        }
+
+        status.textContent = '';
+
+        list.forEach(vacancy => {
+            const card = document.createElement('div');
+            card.className = 'vacancy-card';
+            card.innerHTML = `
+                <div class="vacancy-card-header">
+                    <div>
+                        <h2>${vacancy.title}</h2>
+                        <p>${vacancy.speciality}</p>
+                    </div>
+                </div>
+                <div class="vacancy-info">
+                    <div class="info-item"><span>Описание: </span><strong>${vacancy.description ?? ''}</strong></div>
+                    <div class="info-item"><span>Город: </span><strong>${vacancy.city ?? ''}</strong></div>
+                    <div class="info-item"><span>Язык: </span><strong>${vacancy.language ?? ''}</strong></div>
+                    <div class="info-item"><span>Технологии: </span><strong>${(vacancy.technologies || []).join(', ')}</strong></div>
+                </div>
+            `;
+            vacancysList.appendChild(card);
+        });
+    }
+
+    // Слушатели фильтров
+    searchTitle.addEventListener('input', applyFilters);
+    filterLanguage.addEventListener('change', applyFilters);
+    filterTechnology.addEventListener('change', applyFilters);
+
+    resetBtn.addEventListener('click', () => {
+        searchTitle.value = '';
+        filterLanguage.value = '';
+        filterTechnology.value = '';
+        applyFilters();
+    });
+</script>
