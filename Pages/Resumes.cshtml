@@ -44,6 +44,12 @@
         @Html.AntiForgeryToken()
     </form>
 </div>
+<div id="details-modal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-window" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div id="modal-content"></div>
+    </div>
+</div>
 
 <script>
     const studentsList = document.querySelector('#students-list');
@@ -57,6 +63,42 @@
     let filtered = [];      
 
     loadStudents();
+    function showStudentDetails(id) {
+    const student = allStudents.find(s => s.id === id);
+    if (!student) return;
+
+    document.querySelector('#modal-content').innerHTML = `
+        <div class="modal-header">
+            <h2>${student.name}</h2>
+            <p>${student.speciality}</p>
+        </div>
+        <div class="modal-info">
+            <div class="info-item"><span>ID: </span><strong>${student.id}</strong></div>
+            <div class="info-item"><span>Телефон: </span><strong>${student.phone ?? ''}</strong></div>
+            <div class="info-item"><span>Email: </span><strong>${student.email ?? ''}</strong></div>
+            <div class="info-item"><span>Город: </span><strong>${student.city ?? ''}</strong></div>
+            <div class="info-item"><span>Специальность: </span><strong>${student.speciality ?? ''}</strong></div>
+            <div class="info-item"><span>Язык: </span><strong>${student.language ?? ''}</strong></div>
+            <div class="info-item"><span>Формат обучения: </span><strong>${student.format ?? ''}</strong></div>
+            <div class="info-item"><span>Курс: </span><strong>${student.course ?? ''}</strong></div>
+            <div class="info-item"><span>Дата рождения: </span><strong>${student.birthDate ?? ''}</strong></div>
+            <div class="info-item"><span>Технологии: </span><strong>${(student.technologies || []).join(', ')}</strong></div>
+        </div>
+    `;
+    document.querySelector('#details-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';   // блокируем скролл фона
+}
+
+function closeModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.querySelector('#details-modal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Закрытие по Esc
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+});
 
     async function loadStudents() {
         try {
@@ -110,23 +152,24 @@
         list.forEach(student => {
             const card = document.createElement('div');
             card.className = 'student-card';
-            card.innerHTML = `
-                <div class="student-card-header">
-                    <div>
-                        <h2>${student.name}</h2>
-                        <p>${student.speciality}</p>
-                    </div>
-                </div>
-                <div class="student-info">
-                    <div class="info-item"><span>Телефон: </span><strong>${student.phone ?? ''}</strong></div>
-                    <div class="info-item"><span>Email: </span><strong>${student.email ?? ''}</strong></div>
-                    <div class="info-item"><span>Город: </span><strong>${student.city ?? ''}</strong></div>
-                    <div class="info-item"><span>Курс: </span><strong>${student.course ?? ''}</strong></div>
-                    <div class="info-item"><span>Язык: </span><strong>${student.language ?? ''}</strong></div>
-                    <div class="info-item"><span>Технологии: </span><strong>${(student.technologies || []).join(', ')}</strong></div>
-                </div>
-                <button class="delete-button" onclick="deleteStudent(${student.id})">Удалить</button>
-            `;
+           card.innerHTML = `
+    <div class="student-card-header">
+        <div>
+            <h2>${student.name}</h2>
+            <p>${student.speciality}</p>
+        </div>
+    </div>
+    <div class="student-info">
+        <div class="info-item"><span>Город: </span><strong>${student.city ?? ''}</strong></div>
+        <div class="info-item"><span>Курс: </span><strong>${student.course ?? ''}</strong></div>
+        <div class="info-item"><span>Технологии: </span><strong>${(student.technologies || []).join(', ')}</strong></div>
+    </div>
+    <div class="card-actions">
+    <button class="details-button" onclick="showStudentDetails(${student.id})">Подробнее</button>
+    <a class="edit-button" href="/EditResume?id=${student.id}">Редактировать</a>
+    <button class="delete-button" onclick="deleteStudent(${student.id})">Удалить</button>
+</div>
+`;
             studentsList.appendChild(card);
         });
     }

@@ -1,0 +1,142 @@
+@page
+@model EditResumeModel
+@{
+    var s = Model;
+}
+
+<div class="form-container">
+    <h1>Редактирование резюме</h1>
+    <p class="description">Измените данные и сохраните</p>
+
+    <form method="post" asp-page="/EditResume">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label>Имя-фамилия:</label>
+            <input type="text" name="Name" value="@s.Name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Номер телефона:</label>
+            <input type="tel" name="Phone" value="@s.Phone" required>
+        </div>
+
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" name="Email" value="@s.Email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="city">Город:</label>
+            <select name="City" id="city">
+                @foreach (var city in new[] { "Москва", "Санкт-Петербург", "Краснодар", "Сочи" })
+                {
+                    <option value="@city" selected="@(s.City == city)">@city</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Специальность:</label>
+            <div class="speciality">
+                <input type="radio" name="Speciality" value="Программирование" id="dev" @(s.Speciality == "Программирование" ? "checked" : "")>
+                <label for="dev">Программирование</label><br>
+                <input type="radio" name="Speciality" value="Дизайн" id="design" @(s.Speciality == "Дизайн" ? "checked" : "")>
+                <label for="design">Дизайн</label><br>
+                <input type="radio" name="Speciality" value="Маркетинг" id="marketing" @(s.Speciality == "Маркетинг" ? "checked" : "")>
+                <label for="marketing">Маркетинг</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Язык программирования:</label>
+            <div class="language">
+                @foreach (var lang in new[] { "Java", "Kotlin", "C++" })
+                {
+                    var id = "lang_" + lang.Replace("+", "p");
+                    <input type="radio" name="Language" value="@lang" id="@id" @(s.Language == lang ? "checked" : "")>
+                    <label for="@id">@lang</label><br>
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Формат обучения:</label>
+            <div class="format-l">
+                @foreach (var f in new[] { "Очно", "Заочно", "Дистанционно" })
+                {
+                    var id = "fmt_" + f;
+                    <input type="radio" name="Format" value="@f" id="@id" @(s.Format == f ? "checked" : "")>
+                    <label for="@id">@f</label><br>
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="courses">Курс:</label>
+            <select name="Course" id="courses">
+                @foreach (var c in new[] { "1 курс", "2 курс", "3 курс", "4 курс" })
+                {
+                    <option value="@c" selected="@(s.Course == c)">@c</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Дата рождения:</label>
+            <input type="date" name="BirthDate" value="@s.BirthDate" required>
+        </div>
+
+        <div class="form-group">
+            <label>Технологии:</label>
+            <div class="speciality">
+                @foreach (var t in new[] { "HTML/CSS", "JavaScript", "C#", "Python", "Docker", "React" })
+                {
+                    var id = "tech_" + t.Replace("/", "").Replace("#", "sharp").Replace("+", "p");
+                    <input type="checkbox" name="Technologies" value="@t" id="@id"
+                           @(s.Technologies.Contains(t) ? "checked" : "")>
+                    <label for="@id">@t</label><br>
+                }
+            </div>
+        </div>
+
+        <button class="form-button" type="submit">Сохранить</button>
+        <a class="clear-form-button" asp-page="Resumes" style="display:block; text-align:center; text-decoration:none; line-height:1.5;">
+            Отмена
+        </a>
+    </form>
+
+    <div id="status" class="status"></div>
+</div>
+
+<script>
+    const form = document.querySelector("form");
+    const button = form.querySelector("button[type='submit']");
+    const status = document.querySelector('#status');
+
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        button.textContent = "Сохранение...";
+        button.disabled = true;
+
+        try {
+            const formData = new FormData(form);
+            const response = await fetch(form.action, { method: "POST", body: formData });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+
+            const data = await response.json();
+            status.style.color = '#2a9d3f';
+            status.textContent = 'Сохранено! Перенаправление...';
+
+            setTimeout(() => { window.location.href = '/Resumes'; }, 800);
+        } catch (err) {
+            console.error("Ошибка:", err);
+            status.style.color = '#d9534f';
+            status.textContent = "Ошибка при сохранении: " + err.message;
+            button.textContent = "Сохранить";
+        } finally {
+            button.disabled = false;
+        }
+    });
+</script>

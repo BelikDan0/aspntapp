@@ -43,6 +43,12 @@
         @Html.AntiForgeryToken()
     </form>
 </div>
+<div id="details-modal" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-window" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div id="modal-content"></div>
+    </div>
+</div>
 
 <script>
     const vacancysList = document.querySelector('#vacancys-list');
@@ -56,6 +62,37 @@
     let filtered = [];     
 
     loadVacancy();
+    function showVacancyDetails(id) {
+    const vacancy = allVacancys.find(v => v.id === id);
+    if (!vacancy) return;
+
+    document.querySelector('#modal-content').innerHTML = `
+        <div class="modal-header">
+            <h2>${vacancy.title}</h2>
+            <p>${vacancy.speciality}</p>
+        </div>
+        <div class="modal-info">
+            <div class="info-item"><span>ID: </span><strong>${vacancy.id}</strong></div>
+            <div class="info-item"><span>Описание: </span><strong>${vacancy.description ?? ''}</strong></div>
+            <div class="info-item"><span>Город: </span><strong>${vacancy.city ?? ''}</strong></div>
+            <div class="info-item"><span>Специальность: </span><strong>${vacancy.speciality ?? ''}</strong></div>
+            <div class="info-item"><span>Язык: </span><strong>${vacancy.language ?? ''}</strong></div>
+            <div class="info-item"><span>Технологии: </span><strong>${(vacancy.technologies || []).join(', ')}</strong></div>
+        </div>
+    `;
+    document.querySelector('#details-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.querySelector('#details-modal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+});
 
     async function loadVacancy() {
         try {
@@ -110,19 +147,21 @@
             const card = document.createElement('div');
             card.className = 'vacancy-card';
             card.innerHTML = `
-                <div class="vacancy-card-header">
-                    <div>
-                        <h2>${vacancy.title}</h2>
-                        <p>${vacancy.speciality}</p>
-                    </div>
-                </div>
-                <div class="vacancy-info">
-                    <div class="info-item"><span>Описание: </span><strong>${vacancy.description ?? ''}</strong></div>
-                    <div class="info-item"><span>Город: </span><strong>${vacancy.city ?? ''}</strong></div>
-                    <div class="info-item"><span>Язык: </span><strong>${vacancy.language ?? ''}</strong></div>
-                    <div class="info-item"><span>Технологии: </span><strong>${(vacancy.technologies || []).join(', ')}</strong></div>
-                </div>
-            `;
+    <div class="vacancy-card-header">
+        <div>
+            <h2>${vacancy.title}</h2>
+            <p>${vacancy.speciality}</p>
+        </div>
+    </div>
+    <div class="vacancy-info">
+        <div class="info-item"><span>Город: </span><strong>${vacancy.city ?? ''}</strong></div>
+        <div class="info-item"><span>Язык: </span><strong>${vacancy.language ?? ''}</strong></div>
+        <div class="info-item"><span>Технологии: </span><strong>${(vacancy.technologies || []).join(', ')}</strong></div>
+    </div>
+    <div class="card-actions">
+        <button class="details-button" onclick="showVacancyDetails(${vacancy.id})">Подробнее</button>
+    </div>
+`;
             vacancysList.appendChild(card);
         });
     }

@@ -749,3 +749,174 @@ body {
         grid-template-columns: 1fr;
     }
 }
+/* ==================== Кнопки в карточке ==================== */
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.details-button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #0099ff;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.details-button:hover {
+    background: #0077cc;
+}
+
+/* Кнопка удаления рядом — чуть уже */
+.card-actions .delete-button {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 12px 20px;
+    margin: 0;
+}
+
+/* ==================== Модальное окно ==================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 59, 102, 0.55);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+.modal-overlay.active {
+    display: flex;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-window {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 560px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 30px 28px 24px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    animation: slideUp 0.25s ease;
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: transparent;
+    border: none;
+    font-size: 28px;
+    line-height: 1;
+    color: #999;
+    cursor: pointer;
+    transition: 0.2s;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.modal-close:hover {
+    color: #333;
+    background: #f0f0f0;
+}
+
+.modal-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.modal-header h2 {
+    font-size: 24px;
+    color: #0d3b66;
+    margin-bottom: 6px;
+    padding-right: 30px;
+}
+
+.modal-header p {
+    color: #666;
+    font-size: 16px;
+}
+
+.modal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.modal-info .info-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 15px;
+}
+
+.modal-info .info-item:last-child {
+    border-bottom: none;
+}
+
+.modal-info .info-item span {
+    min-width: 160px;
+    color: #888;
+}
+
+.modal-info .info-item strong {
+    color: #222;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 600px) {
+    .modal-window {
+        padding: 24px 20px;
+    }
+    .modal-info .info-item {
+        flex-direction: column;
+        gap: 4px;
+    }
+    .modal-info .info-item span {
+        min-width: unset;
+    }
+}
+.edit-button {
+    flex: 0 0 auto;
+    padding: 12px 18px;
+    border: 2px solid #0099ff;
+    border-radius: 10px;
+    background: #fff;
+    color: #0099ff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: 0.25s;
+    display: inline-flex;
+    align-items: center;
+}
+
+.edit-button:hover {
+    background: #0099ff;
+    color: #fff;
+}
