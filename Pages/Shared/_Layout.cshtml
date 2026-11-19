@@ -1,63 +1,82 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - aspnetWebApp</title>
     <script type="importmap"></script>
-   <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <!-- Если вы используете Bootstrap, убедитесь, что его CSS тоже подключен здесь -->
 </head>
 <body>
      
     <nav class="nav">
-    <a class="footer-logo-main" asp-page="Index">
-                College<span>Job</span>
-
+        <a class="footer-logo-main" asp-page="/Index">
+            College<span>Job</span>
         </a>
-    <ul class="nav-ul">
+        <ul class="nav-ul">
             <li class="nav-item">
-                <a class="nav-link" asp-page="/index">
-                Главная</a>
+                <a class="nav-link" asp-page="/Index">Главная</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-page="/Resumes">
-                Резюме</a>
+                <a class="nav-link" asp-page="/Resumes">Резюме</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/Vacancys">
-                Вакансии</a>
+                <a class="nav-link" href="/Vacancys">Вакансии</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-page="/CreateResume">
-                Создание резюме</a>
+                <a class="nav-link" asp-page="/CreateResume">Создание резюме</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-page="/CreateVacancy">
-                Создание вакансии</a>
+                <a class="nav-link" asp-page="/CreateVacancy">Создание вакансии</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-page="/About">
-                О нас</a>
+                <a class="nav-link" asp-page="/About">О нас</a>
             </li>
+
+            <!-- ✅ ДОБАВЛЕННЫЙ БЛОК АВТОРИЗАЦИИ (ВХОД / ВЫХОД) ✅ -->
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <li class="nav-item d-flex align-items-center">
+                    <span class="nav-link text-muted" style="cursor: default; font-weight: 500;">
+                        Привет, @User.Identity.Name!
+                    </span>
+                    <!-- Форма для безопасного выхода через POST-запрос -->
+                    <form method="post" asp-page="/Account/Logout" class="d-inline ms-2">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" style="padding: 4px 12px; border-radius: 4px;">
+                            Выйти
+                        </button>
+                    </form>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-page="/Account/Login">Войти</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-page="/Account/Register">Регистрация</a>
+                </li>
+            }
+            <!-- ✅ КОНЕЦ БЛОКА АВТОРИЗАЦИИ ✅ -->
+
         </ul>
     </nav>
-    
-
-   
 
     <main role="main" class="pb-3 main-content">
         @RenderBody()
     </main>
+
     <footer class="site-footer">
         <div class="footer-container">
-            <a class="footer-logo" asp-page="Index">
+            <a class="footer-logo" asp-page="/Index">
                 College<span>Job</span>
             </a>
-            <p>Платформа для старта в проффесиональнйо карьеры</p>
+            <p>Платформа для старта в профессиональной карьере</p>
             <span class="footer-copy">
-            @DateTime.Now.Year CollegeJob</span>
+                @DateTime.Now.Year CollegeJob
+            </span>
         </div>
-        
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -66,5 +85,4 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
-
 </html>

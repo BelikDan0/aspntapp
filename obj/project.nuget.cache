@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "x0O5vh3K8pE=",
+  "dgSpecHash": "pSIyi8dB0hs=",
   "success": true,
-  "projectFilePath": "C:\\Users\\106010190\\Desktop\\net\\aspntapp\\aspnetWebApp.csproj",
+  "projectFilePath": "C:\\Users\\106010190\\Desktop\\aspinet\\aspntapp\\aspnetWebApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\106010190\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\106010190\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\10.0.14\\microsoft.aspnetcore.identity.entityframeworkcore.10.0.14.nupkg.sha512",
@@ -15,7 +15,7 @@
     "C:\\Users\\106010190\\.nuget\\packages\\microsoft.codeanalysis.workspaces.msbuild\\5.0.0\\microsoft.codeanalysis.workspaces.msbuild.5.0.0.nupkg.sha512",
     "C:\\Users\\106010190\\.nuget\\packages\\microsoft.data.sqlite.core\\10.0.14\\microsoft.data.sqlite.core.10.0.14.nupkg.sha512",
     "C:\\Users\\106010190\\.nuget\\packages\\microsoft.entityframeworkcore\\10.0.15\\microsoft.entityframeworkcore.10.0.15.nupkg.sha512",
-    "C:\\Users\\106010190\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\11.0.0\\microsoft.entityframeworkcore.abstractions.11.0.0.nupkg.sha512",
+    "C:\\Users\\106010190\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\10.0.15\\microsoft.entityframeworkcore.abstractions.10.0.15.nupkg.sha512",
     "C:\\Users\\106010190\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\10.0.15\\microsoft.entityframeworkcore.analyzers.10.0.15.nupkg.sha512",
     "C:\\Users\\106010190\\.nuget\\packages\\microsoft.entityframeworkcore.design\\10.0.15\\microsoft.entityframeworkcore.design.10.0.15.nupkg.sha512",
     "C:\\Users\\106010190\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\10.0.15\\microsoft.entityframeworkcore.relational.10.0.15.nupkg.sha512",
@@ -37,18 +37,5 @@
     "C:\\Users\\106010190\\.nuget\\packages\\system.composition.runtime\\9.0.0\\system.composition.runtime.9.0.0.nupkg.sha512",
     "C:\\Users\\106010190\\.nuget\\packages\\system.composition.typedparts\\9.0.0\\system.composition.typedparts.9.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1603",
-      "level": "Warning",
-      "message": "Microsoft.EntityFrameworkCore 10.0.15 зависит от Microsoft.EntityFrameworkCore.Abstractions (>= 10.0.15), но версия Microsoft.EntityFrameworkCore.Abstractions 10.0.15 не найдена. Использовалась версия Microsoft.EntityFrameworkCore.Abstractions 11.0.0.",
-      "projectPath": "C:\\Users\\106010190\\Desktop\\net\\aspntapp\\aspnetWebApp.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\106010190\\Desktop\\net\\aspntapp\\aspnetWebApp.csproj",
-      "libraryId": "Microsoft.EntityFrameworkCore.Abstractions",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  "logs": []
 }
