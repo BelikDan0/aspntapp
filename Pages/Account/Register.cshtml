@@ -4,35 +4,41 @@
     ViewData["Title"] = "Регистрация";
 }
 
-<h2>Регистрация</h2>
+<div class="form-container">
+    <h1>Регистрация</h1>
+    <p class="description">Создайте аккаунт, чтобы продолжить</p>
 
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <!-- ЭТОТ БЛОК ВАЖЕН: он покажет ошибки, если регистрация не удалась -->
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <form method="post" id="register-form">
+        @Html.AntiForgeryToken()
 
-            <div class="form-group mb-3">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
+        @* Общий блок ошибок валидации *@
+        <div asp-validation-summary="All" class="validation-summary"></div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="Input.Email">Email:</label>
+            <input asp-for="Input.Email" placeholder="email@example.com" required />
+            <span asp-validation-for="Input.Email"></span>
+        </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="Input.Password">Пароль:</label>
+            <input asp-for="Input.Password" type="password" placeholder="Минимум 6 символов" required />
+            <span asp-validation-for="Input.Password"></span>
+        </div>
 
-            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-        </form>
-    </div>
+        <div class="form-group">
+            <label asp-for="Input.ConfirmPassword">Повторите пароль:</label>
+            <input asp-for="Input.ConfirmPassword" type="password" required />
+            <span asp-validation-for="Input.ConfirmPassword"></span>
+        </div>
+
+        <button type="submit" class="form-button">Зарегистрироваться</button>
+    </form>
+
+    <p style="text-align:center; margin-top:15px;">
+        Уже есть аккаунт?
+        <a asp-page="/Account/Login">Войти</a>
+    </p>
 </div>
 
 @section Scripts {
