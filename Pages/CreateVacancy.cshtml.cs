@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using aspnetWebApp.Models;
 using aspnetWebApp.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace aspnetWebApp.Pages;
-
+[Authorize]
 public class CreateVacancyModel : PageModel
 {
     [BindProperty] public string Title { get; set; } = "";

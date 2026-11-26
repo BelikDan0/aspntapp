@@ -2,11 +2,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using aspnetWebApp.Models;
 using aspnetWebApp.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace aspnetWebApp.Pages;
+[Authorize]
+
+
 
 public class CreateResumeModel : PageModel
 {
+    private readonly ApplicationDbContext _context;
+    public CreateResumeModel(ApplicationDbContext context)
+    {
+        _context=context;
+    }
     [BindProperty] public string Name { get; set; } = "";
     [BindProperty] public string Phone { get; set; } = "";
     [BindProperty] public string Email { get; set; } = "";
@@ -20,8 +32,15 @@ public class CreateResumeModel : PageModel
 
     public void OnGet() { }
 
-    public IActionResult OnPost()
+   public async Task<IActionResult> OnPostAsync()
     {
+        // Хорошая практика: проверяем, что данные валидны, перед сохранением
+        if (!ModelState.IsValid)
+        {
+            return Page(); // Если есть ошибки, остаемся на той же странице и показываем их
+        }
+        var userId=User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         var student = new Student
         {
             Name = Name,
@@ -33,21 +52,40 @@ public class CreateResumeModel : PageModel
             Format = Format,
             Course = Course,
             BirthDate = BirthDate,
-            Technologies = Technologies
+            Technologies = Technologies,
+            UserId=userId,
         };
 
-        StudentStore.Add(student);
-        return new JsonResult(student);
+        _context.Students.Add(student);
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("/Index"); 
+        
+        
     }
 
     public IActionResult OnGetStudents()
     {
-        return new JsonResult(StudentStore.All);
+        var students=_context.Students.ToListAsync();
+        return new JsonResult(students);
     }
 
-    public IActionResult OnPostDelete(int id)
+    public async Task<IActionResult> OnPostDelete(int id)
     {
-        var ok = StudentStore.Delete(id);
-        return new JsonResult(new { success = ok });
+        var student= await _context.Students.FindAsync(id);
+        if (student == null)
+        {
+            return new JsonResult(new { success = false, message = "Не найдено" });
+        }
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (student.UserId != currentUserId)
+        {
+            return new JsonResult(new { success = false, message = "Нет прав на удаление" });
+        }
+
+        _context.Students.Remove(student);
+        await _context.SaveChangesAsync();
+
+        return new JsonResult(new { success = true });
     }
 }

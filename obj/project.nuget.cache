@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rv8yjHq3WDk=",
+  "dgSpecHash": "pSIyi8dB0hs=",
   "success": true,
-  "projectFilePath": "C:\\Users\\106010190\\Desktop\\asp\\aspntapp\\aspnetWebApp.csproj",
+  "projectFilePath": "C:\\Users\\106010190\\Desktop\\aspinet\\aspntapp\\aspnetWebApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\106010190\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\106010190\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\10.0.14\\microsoft.aspnetcore.identity.entityframeworkcore.10.0.14.nupkg.sha512",

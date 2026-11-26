@@ -655,7 +655,6 @@ C:\Users\106010190\Desktop\aspinet\aspntapp\obj\Debug\net10.0\scopedcss\bundle\a
 C:\Users\106010190\Desktop\aspinet\aspntapp\obj\Debug\net10.0\scopedcss\projectbundle\aspnetWebApp.bundle.scp.css
 C:\Users\106010190\Desktop\aspinet\aspntapp\obj\Debug\net10.0\compressed\zt1ycrgnm4-{0}-s9y91u5nkn-s9y91u5nkn.gz
 C:\Users\106010190\Desktop\aspinet\aspntapp\obj\Debug\net10.0\compressed\opp8p75788-{0}-0md2ls1of0-0md2ls1of0.gz
-C:\Users\106010190\Desktop\aspinet\aspntapp\obj\Debug\net10.0\compressed\2v9ug8irji-{0}-20qfjfk5b9-20qfjfk5b9.gz
 C:\Users\106010190\Desktop\aspinet\aspntapp\obj\Debug\net10.0\compressed\ewtddk668o-{0}-61n19gt1b8-61n19gt1b8.gz
 C:\Users\106010190\Desktop\aspinet\aspntapp\obj\Debug\net10.0\compressed\gpfv6wmni9-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 C:\Users\106010190\Desktop\aspinet\aspntapp\obj\Debug\net10.0\compressed\vy8v8igqa2-{0}-t1cqhe9u97-t1cqhe9u97.gz
@@ -947,3 +946,4 @@ C:\Users\106010190\Desktop\asp\aspntapp\obj\Debug\net10.0\aspnetWebApp.pdb
 C:\Users\106010190\Desktop\asp\aspntapp\obj\Debug\net10.0\aspnetWebApp.genruntimeconfig.cache
 C:\Users\106010190\Desktop\asp\aspntapp\obj\Debug\net10.0\ref\aspnetWebApp.dll
 C:\Users\106010190\Desktop\asp\aspntapp\obj\Debug\net10.0\compressed\2v9ug8irji-{0}-tk1s8524bt-tk1s8524bt.gz
+C:\Users\106010190\Desktop\aspinet\aspntapp\obj\Debug\net10.0\compressed\2v9ug8irji-{0}-stfs5sw9xa-stfs5sw9xa.gz
